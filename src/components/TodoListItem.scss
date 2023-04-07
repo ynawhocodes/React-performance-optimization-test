@@ -19,7 +19,7 @@
     }
     &.checked {
       svg {
-        color: #22b8cf;
+        color: #ff6200;
       }
       .text {
         color: #adb5bd;
@@ -31,10 +31,10 @@
     display: flex;
     align-items: center;
     font-size: 1.5rem;
-    color: #ff6b6b;
+    color: #ff6200;
     cursor: pointer;
     &:hover {
-      color: #ff8787;
+      color: #ff6200;
     }
   }
 
