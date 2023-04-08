@@ -23,12 +23,28 @@ function App() {
     },
     [todos],
   );
-  console.log(todos);
+
+  const onRemove = useCallback(
+    (id) => {
+      const newTodos = todos.filter((todos) => id !== todos.id);
+      setTodos(newTodos);
+    },
+    [todos],
+  );
+  const onToggle = useCallback(
+    (id) => {
+      const newTodos = todos.map((todo) =>
+        id === todo.id ? { ...todo, checked: !todo.checked } : todo,
+      );
+      setTodos(newTodos);
+    },
+    [todos],
+  );
 
   return (
     <TodoTemplate>
       <TodoInsert onInsert={onInsert} />
-      <TodoList todos={todos} />
+      <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
     </TodoTemplate>
   );
 }
