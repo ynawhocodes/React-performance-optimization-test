@@ -7,9 +7,18 @@ const dummyTodos = [
   { id: 1, text: 'todo2', checked: false },
   { id: 2, text: 'todo3', checked: false },
 ];
+
+function createBultTodos() {
+  const array = [];
+  for (let i = 1; i <= 2500; i++) {
+    array.push({ id: i, text: `todo ${i}`, checked: false });
+  }
+  return array;
+}
+
 function App() {
-  const [todos, setTodos] = useState(dummyTodos);
-  const nextId = useRef(3);
+  const [todos, setTodos] = useState(createBultTodos);
+  const nextId = useRef(2501);
 
   const onInsert = useCallback(
     (newTodoText) => {
@@ -23,7 +32,6 @@ function App() {
     },
     [todos],
   );
-
   const onRemove = useCallback(
     (id) => {
       const newTodos = todos.filter((todos) => id !== todos.id);
