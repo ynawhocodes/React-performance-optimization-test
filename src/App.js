@@ -1,12 +1,7 @@
 import TodoTemplate from './components/TodoTemplate';
 import TodoInsert from './components/TodoInsert';
 import TodoList from './components/TodoList';
-import React, { useState, useRef, useCallback } from 'react';
-const dummyTodos = [
-  { id: 0, text: 'todo1', checked: true },
-  { id: 1, text: 'todo2', checked: false },
-  { id: 2, text: 'todo3', checked: false },
-];
+import React, { useRef, useCallback, useReducer } from 'react';
 
 function createBultTodos() {
   const array = [];
@@ -15,9 +10,23 @@ function createBultTodos() {
   }
   return array;
 }
+function todoReducer(todos, action) {
+  switch (action.type) {
+    case 'INSERT':
+      return todos.concat(action.todo);
+    case 'REMOVE':
+      return todos.filter((todo) => todo.id !== action.id);
+    case 'TOGGLE':
+      return todos.map((todo) =>
+        todo.id === action.id ? { ...todo, checked: !todo.checked } : todo,
+      );
+    default:
+      return todos;
+  }
+}
 
 function App() {
-  const [todos, setTodos] = useState(createBultTodos);
+  const [todos, dispatch] = useReducer(todoReducer, undefined, createBultTodos);
   const nextId = useRef(2501);
 
   const onInsert = useCallback((newTodoText) => {
@@ -26,19 +35,14 @@ function App() {
       text: newTodoText,
       checked: false,
     };
-    setTodos((todos) => todos.concat(newTodo));
+    dispatch({ type: 'INSERT', newTodo });
     nextId.current += 1;
   }, []);
   const onRemove = useCallback((id) => {
-    const newTodos = (todos) => todos.filter((todos) => id !== todos.id);
-    setTodos(newTodos);
+    dispatch({ type: 'REMOVE', id });
   }, []);
   const onToggle = useCallback((id) => {
-    const newTodos = (todos) =>
-      todos.map((todo) =>
-        id === todo.id ? { ...todo, checked: !todo.checked } : todo,
-      );
-    setTodos(newTodos);
+    dispatch({ type: 'TOGGLE', id });
   }, []);
 
   return (
