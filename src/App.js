@@ -20,34 +20,26 @@ function App() {
   const [todos, setTodos] = useState(createBultTodos);
   const nextId = useRef(2501);
 
-  const onInsert = useCallback(
-    (newTodoText) => {
-      const newTodo = {
-        id: nextId.current,
-        text: newTodoText,
-        checked: false,
-      };
-      setTodos(todos.concat(newTodo));
-      nextId.current += 1;
-    },
-    [todos],
-  );
-  const onRemove = useCallback(
-    (id) => {
-      const newTodos = todos.filter((todos) => id !== todos.id);
-      setTodos(newTodos);
-    },
-    [todos],
-  );
-  const onToggle = useCallback(
-    (id) => {
-      const newTodos = todos.map((todo) =>
+  const onInsert = useCallback((newTodoText) => {
+    const newTodo = {
+      id: nextId.current,
+      text: newTodoText,
+      checked: false,
+    };
+    setTodos((todos) => todos.concat(newTodo));
+    nextId.current += 1;
+  }, []);
+  const onRemove = useCallback((id) => {
+    const newTodos = (todos) => todos.filter((todos) => id !== todos.id);
+    setTodos(newTodos);
+  }, []);
+  const onToggle = useCallback((id) => {
+    const newTodos = (todos) =>
+      todos.map((todo) =>
         id === todo.id ? { ...todo, checked: !todo.checked } : todo,
       );
-      setTodos(newTodos);
-    },
-    [todos],
-  );
+    setTodos(newTodos);
+  }, []);
 
   return (
     <TodoTemplate>
